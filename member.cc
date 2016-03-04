@@ -13,8 +13,8 @@ int main()
 		{"tel", "varchar(20) DEFAULT NULL"},
 		{"date", "datetime NOT NULL"}
 	};
-	member.table_name = "Users";
-	member.extra = "primary key('email', 'date')";
+	member.table_name = "Users12";
+	member.extra = "primary key (email, date)";
 	member.engine = "ENGINE=MyISAM DEFAULT CHARSET=utf8";
 	
 	QueryData qd;
@@ -23,5 +23,7 @@ int main()
 	member.contents = {
 		"zezeon@msn.com", "cockcodk", "1", "Park Seungwon", "031-255-6698", ""};
 	qd.insert(member);
+	SqlData s = qd.select("Users12");
+	for(auto& a : s.contents) cout << a << endl;
 }
 

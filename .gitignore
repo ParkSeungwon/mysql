@@ -1,0 +1,4 @@
+*.o
+sql
+*.vim
+*.swp

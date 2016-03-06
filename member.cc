@@ -18,10 +18,10 @@ int main()
 	member.engine = "ENGINE=MyISAM DEFAULT CHARSET=utf8";
 	
 	QueryData qd;
-	qd.connect("localhost", "strategy", "cockcodk0", "strategy");
+	qd.connect("localhost", "strategy", "strategy", "strategy");
 	qd.create_table(member);
 	member.contents = { "zezeon@msn.com", "cockcodk", "1", "Park Seungwon",
-		"031-255-6698", "now()"};
+		"031-255-6698", qd.now()};
 	qd.insert(member);
 	SqlData s = qd.select("Users", "email = 'zezeon@msn.com'");
 	for(auto& a : s.contents) cout << a << endl;

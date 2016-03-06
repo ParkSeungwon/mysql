@@ -18,5 +18,6 @@ public:
 	bool create_table(const SqlData& data);
 	bool insert(const SqlData& data);
 	SqlData select(std::string table, std::string where = "");
+	static std::string now();
 };
 

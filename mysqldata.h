@@ -15,8 +15,8 @@ struct SqlData
 class QueryData : public Mysqlquery
 {
 public:
-	bool create_table(SqlData& data);
-	bool insert(SqlData& data);
+	bool create_table(const SqlData& data);
+	bool insert(const SqlData& data);
 	SqlData select(std::string table, std::string where = "");
 };
 

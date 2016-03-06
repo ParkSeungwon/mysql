@@ -1,7 +1,7 @@
 #include "mysqldata.h"
 using namespace std;
 
-bool QueryData::create_table(SqlData& d)
+bool QueryData::create_table(const SqlData& d)
 {
 	string q = "create table " + d.table_name + " (";
 	for(auto& a : d.structure) q += " " + a.first + " " + a.second + ", ";
@@ -9,7 +9,7 @@ bool QueryData::create_table(SqlData& d)
 	return myQuery(q);
 }
 
-bool QueryData::insert(SqlData& d)
+bool QueryData::insert(const SqlData& d)
 {
 	string q = "insert into " + d.table_name + " values (";
 	for(int i = 0; i < d.structure.size(); i++) {
@@ -33,6 +33,7 @@ SqlData QueryData::select(string table, string where)
 	myQuery(q);
 
 	SqlData d;
+	d.table_name = table;
 	sql::ResultSetMetaData* res_meta = res->getMetaData();
 	int c = res_meta->getColumnCount();
 	for(int i = 0; i < c; i++) {

@@ -1,4 +1,6 @@
 *.o
-sql
+*.x
+*.sql
 *.vim
 *.swp
+*.gch

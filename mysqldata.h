@@ -1,23 +1,25 @@
 #pragma once
-#include <string>
 #include <vector>
+using namespace std;
 #include "mysqlquery.h"
 
-struct SqlData
-{
-	std::string table_name;
-	std::vector<std::pair<std::string, std::string>> structure;
-	std::string extra;
-	std::string engine;
-	std::vector<std::string> contents;
-};
-
-class QueryData : public Mysqlquery
+class SqlData : public Mysqlquery
 {
 public:
-	bool create_table(const SqlData& data);
-	bool insert(const SqlData& data);
-	SqlData select(std::string table, std::string where = "");
-	static std::string now();//system clock->mysql datetime string
+	bool insert();
+	int select(std::string table, std::string where = "");
+	std::vector<std::string> show_tables();
+	std::string now();//system clock->mysql datetime string
+	std::vector<std::string>& operator[](int i) {return contents[i];}
+	int group_by(std::string col);
+	template <typename... Args> void order_by(int column, Args... args);
+	bool order_by() {return true;}
+
+	std::vector<std::string>* begin() {return &contents[0];}
+	std::vector<std::string>* end() {return &contents[contents.size()];}
+
+	std::string table_name;
+	std::vector<std::pair<std::string, std::string>> structure;
+	std::vector<std::vector<std::string>> contents;
 };
 

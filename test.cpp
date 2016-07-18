@@ -23,7 +23,7 @@ int main()
 	}
 
 
-	{
+	{//usage example
 		SqlQuery d;
 		d.connect("localhost", "dndd", "dndddndd", "dndd");
 		d.select("VotingBoard", "where page = 0 order by num, date");
@@ -34,6 +34,8 @@ int main()
 			cout << endl;
 		}
 		d.select("수능", "where page = 0 order by num, date");
+		//d.group_by("num");
+		d.order_by(1,3);
 		data = move(d);
 		for(auto& a : data) {
 			for(auto& b : a) cout << b << ' ';

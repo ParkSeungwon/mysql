@@ -30,6 +30,13 @@ string SqlQuery::now()
 	return res->getString(1);
 }
 
+string SqlQuery::password(string s)
+{
+	myQuery("select password('" + s + "');");
+	res->next();
+	return res->getString(1);
+}
+
 int SqlQuery::select(string table, string where)
 {
 	string q = "select * from " + table + ' ' + where + ';';

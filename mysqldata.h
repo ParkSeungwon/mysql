@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include<functional>
 #include "mysqlquery.h"
 
 class SqlData
@@ -18,21 +19,35 @@ protected:
 class SqlQuery : public Mysqlquery, public SqlData
 {
 public:
-	bool insert();
 	int select(std::string table, std::string where = "");
-	std::vector<std::string> show_tables();
-	std::string now();//system clock->mysql datetime string
 	int group_by(std::string col);
 
+	bool insert();
+	std::string password(std::string pass);
+	std::vector<std::string> show_tables();
+	std::string now();//system clock->mysql datetime string
+
 	template <typename... Args>
-	bool order_by(int col, Args... args)
+	bool order_by(Args... args)
 	{//buggy
 		std::sort(contents.begin(), contents.end(), 
-				[=](std::vector<std::string>& a, std::vector<std::string> b) {
-				if(a[col] == b[col]) return order_by(args...); 
-				else return a[col] < b[col];
-				});
+				std::bind(&SqlQuery::order_lambda, this, std::placeholders::_1, 
+					std::placeholders::_2, args...));
 	}
-	bool order_by() {return true;}
+
+	template <typename... Args>
+	bool order_lambda(const std::vector<std::string>& a, 
+			const std::vector<std::string>& b, int col, Args... args)
+	{
+		if(a[col] == b[col]) {
+			if (sizeof...(args) == 0) return true;
+			else return order_lambda(a, b, args...);
+		} else return a[col] < b[col];
+	}
+
+//	bool order_lambda(std::vector<std::string>, std::vector<std::string>) 
+//	{
+//		return true;
+//	}
 };
 

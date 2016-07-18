@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-	SqlData member;
+	SqlQuery member;
 //	member.structure =  {
 //		{"email", "char(30) NOT NULL"},
 //		{"password", "char(45) DEFAULT NULL"},
@@ -25,11 +25,11 @@ int main()
 	member.select("수능", "where num=1 order by date, edit desc");
 	int n = 0;
 	int k;
-	cout << "structure size = " << member.structure.size() << endl;
-	for(auto& a : member.structure) {
-		cout << a.first << ' ' << a.second << endl;
-	}
-	for(auto& b : member.contents) for(auto& a : b) {
+//	cout << "structure size = " << member.structure.size() << endl;
+	//for(auto& a : member.structure) {
+	//	cout << a.first << ' ' << a.second << endl;
+	//}
+	for(auto& b : member) for(auto& a : b) {
 		n++;
 		k = n % 7;
 		if(k == 4 || k == 6 || k == 0)  cout << a << ' ';

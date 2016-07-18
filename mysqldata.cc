@@ -5,7 +5,12 @@
 #include "mysqldata.h"
 using namespace std;
 
-bool SqlData::insert()
+bool SqlData::is_int(int n)
+{
+	return structure[n].second.find("INT") != string::npos;
+}
+
+bool SqlQuery::insert()
 {//d should be 1 record
 	auto& record = contents[0];
 	string q = "insert into " + table_name + " values (";
@@ -18,15 +23,14 @@ bool SqlData::insert()
 	return myQuery(q);
 }
 
-
-string SqlData::now()
+string SqlQuery::now()
 {
 	myQuery("select now();");
 	res->next();
 	return res->getString(1);
 }
 
-int SqlData::select(string table, string where)
+int SqlQuery::select(string table, string where)
 {
 	string q = "select * from " + table + ' ' + where + ';';
 	myQuery(q);
@@ -34,10 +38,11 @@ int SqlData::select(string table, string where)
 	table_name = table;
 	sql::ResultSetMetaData* mt = res->getMetaData();
 	int c = mt->getColumnCount();
+	structure.clear();
+	contents.clear();
 	for(int i = 0; i < c; i++) //populate structure
 		structure.push_back({mt->getColumnName(i+1), mt->getColumnTypeName(i+1)});
 	vector<string> record;
-	contents.clear();
 	while(res->next()) { //populate contents
 		record.clear();
 		for(int i = 0; i < c; i++) record.push_back(res->getString(i+1));
@@ -46,7 +51,7 @@ int SqlData::select(string table, string where)
 	return contents.size();
 }
 
-int SqlData::group_by(string cl)
+int SqlQuery::group_by(string cl)
 {
 	int idx;
 	int sz = contents.size();
@@ -63,15 +68,6 @@ int SqlData::group_by(string cl)
 	return contents.size();
 }
 
-template <typename... Args>
-void SqlData::order_by(int col, Args... args)
-{
-	sort(contents.begin(), contents.end(), 
-			[=](vector<string>& a, vector<string> b) {
-				if(a[col] == b[col]) return order_by(args...); 
-				else return a[col] < b[col];
-			});
-}
 /*string SqlData::now()
 {
 	auto now = chrono::system_clock::now();
@@ -90,7 +86,7 @@ void SqlData::order_by(int col, Args... args)
 	return s;
 }*/
 
-vector<string> SqlData::show_tables()
+vector<string> SqlQuery::show_tables()
 {
 	vector<string> record;
 	myQuery("show tables;");

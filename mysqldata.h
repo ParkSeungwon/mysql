@@ -30,19 +30,31 @@ public:
 	template <typename... Args>
 	bool order_by(Args... args)
 	{//buggy
+		arguments.clear();
+		get_args(args...);
 		std::sort(contents.begin(), contents.end(), 
 				std::bind(&SqlQuery::order_lambda, this, std::placeholders::_1, 
-					std::placeholders::_2, args...));
+					std::placeholders::_2, arguments));
 	}
 
-	template <typename... Args>
-	bool order_lambda(const std::vector<std::string>& a, 
-			const std::vector<std::string>& b, int col, Args... args)
+private:
+	std::vector<int> arguments;
+
+	template<typename... Args>
+	void get_args(int col, Args... args)
 	{
-		if(a[col] == b[col]) {
-			if (sizeof...(args) == 0) return true;
-			else return order_lambda(a, b, args...);
-		} else return a[col] < b[col];
+		arguments.push_back(col);
+		get_args(args...);
+	}
+
+	void get_args() {}
+
+	bool order_lambda(const std::vector<std::string>& a, 
+			const std::vector<std::string>& b, std::vector<int> cols)
+	{
+		int i=0;
+		while(a[cols[i]] == b[cols[i]] && i < cols.size()-1) i++; 
+		return a[cols[i]] < b[cols[i]];
 	}
 
 //	bool order_lambda(std::vector<std::string>, std::vector<std::string>) 

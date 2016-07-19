@@ -27,9 +27,7 @@ public:
 	std::vector<std::string> show_tables();
 	std::string now();//system clock->mysql datetime string
 
-	template <typename... Args>
-	bool order_by(Args... args)
-	{//buggy
+	template <typename... Args> bool order_by(Args... args) {
 		arguments.clear();
 		get_args(args...);
 		std::sort(contents.begin(), contents.end(), 
@@ -39,27 +37,13 @@ public:
 
 private:
 	std::vector<int> arguments;
-
-	template<typename... Args>
-	void get_args(int col, Args... args)
-	{
+	template<typename... Args> void get_args(int col, Args... args) {
 		arguments.push_back(col);
 		get_args(args...);
 	}
-
 	void get_args() {}
 
 	bool order_lambda(const std::vector<std::string>& a, 
-			const std::vector<std::string>& b, std::vector<int> cols)
-	{
-		int i=0;
-		while(a[cols[i]] == b[cols[i]] && i < cols.size()-1) i++; 
-		return a[cols[i]] < b[cols[i]];
-	}
-
-//	bool order_lambda(std::vector<std::string>, std::vector<std::string>) 
-//	{
-//		return true;
-//	}
+			const std::vector<std::string>& b, std::vector<int> cols);
 };
 

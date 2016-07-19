@@ -101,4 +101,11 @@ vector<string> SqlQuery::show_tables()
 	return record;
 }
 
+bool SqlQuery::order_lambda(const std::vector<std::string>& a, 
+		const std::vector<std::string>& b, std::vector<int> cols)
+{
+	int i=0;
+	while(a[cols[i]] == b[cols[i]] && i < cols.size()-1) i++; 
+	return a[cols[i]] < b[cols[i]];
+}
 

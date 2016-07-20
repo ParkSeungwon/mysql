@@ -34,10 +34,10 @@ int main()
 			cout << endl;
 		}
 		d.select("수능"); 
-		d.order_by("num","date");
+		d.order_by("email", "date", -6);
+		d.group_by("num", "page");
 		//d.group_by("num");
-		data = move(d);
-		for(auto& a : data) {
+		for(auto& a : d) {
 			cout << a[0] << ' ' << a[1] << ' ' << a[3] << a[5];
 			cout << endl;
 		}

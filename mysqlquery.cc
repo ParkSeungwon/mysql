@@ -8,7 +8,7 @@ using namespace std;
 
 bool Mysqlquery::myQuery(std::string str)
 {
-	cout << str << endl;
+	//cout << str << endl;
     bool ok = false;
 	try
 	{

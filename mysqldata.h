@@ -20,14 +20,33 @@ class SqlQuery : public Mysqlquery, public SqlData
 {
 public:
 	int select(std::string table, std::string where = "");
-	int group_by(std::string col);
 	bool insert();
 	
 	std::string password(std::string pass);
 	std::vector<std::string> show_tables();
 	std::string now();//system clock->mysql datetime string
+	template <typename... Args> int group_by(Args... args)
+	{//first order_by -> group_by
+		arguments.clear();
+		get_args(args...);
+		std::vector<std::string> before;
+		before.resize(arguments.size());
+		bool del;
+		for(auto& c : contents) {
+			del = true;
+			for(auto& a : arguments) if(c[a] != before[a]) del = false;
+			if(del) c[0] = "this_will@be&deleted";
+			else before = c;
+		}
+		auto it = remove_if(contents.begin(), contents.end(), 
+				[](const std::vector<std::string>& a) {
+				return a[0] == "this_will@be&deleted";});
+		contents.erase(it, contents.end());
+		return contents.size();
+	}
 
-	template <typename... Args> bool order_by(Args... args) {
+	template <typename... Args> bool order_by(Args... args) 
+	{//use [-nth] column to order desc
 		arguments.clear();
 		get_args(args...);
 		std::sort(contents.begin(), contents.end(), 

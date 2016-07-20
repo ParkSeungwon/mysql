@@ -60,22 +60,6 @@ int SqlQuery::select(string table, string where)
 	return contents.size();
 }
 
-int SqlQuery::group_by(string cl)
-{
-	int idx;
-	int sz = contents.size();
-	for(idx=0; idx<structure.size(); idx++) if(cl == structure[idx].first) break;
-	string before;
-	for(int j=0; j<sz; j++) {
-		if(contents[j][idx] == before) contents[j][idx] = "this_will@be&deleted";
-		else before = contents[j][idx];
-	}
-	auto it = remove_if(contents.begin(), contents.end(), 
-			[idx](const vector<string>& a) {
-			return a[idx] == "this_will@be&deleted";});
-	contents.erase(it, contents.end());
-	return contents.size();
-}
 
 /*string SqlData::now()
 {
@@ -107,7 +91,14 @@ bool SqlQuery::order_lambda(const std::vector<std::string>& a,
 		const std::vector<std::string>& b, std::vector<int> cols)
 {
 	int i=0;
-	while(a[cols[i]] == b[cols[i]] && i < cols.size()-1) i++; 
-	return is_int(i) ? stoi(a[cols[i]]) < stoi(b[cols[i]]) : a[cols[i]] < b[cols[i]];
+	while(a[abs(cols[i])] == b[abs(cols[i])] && i < cols.size()-1) i++; 
+	bool desc = false;
+	if(cols[i] < 0) {
+		cols[i] = -cols[i];
+		desc = true;
+	}
+	bool asc = is_int(i) ? stoi(a[cols[i]]) < stoi(b[cols[i]]) : 
+						   		 a[cols[i]] < b[cols[i]];
+	return desc ? !asc : asc;
 }
 

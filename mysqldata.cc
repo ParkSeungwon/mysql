@@ -9,6 +9,8 @@ bool SqlData::is_int(int n)
 {
 	return structure[n].second.find("INT") != string::npos;
 }
+std::vector<std::string>* SqlData::begin() {return &contents[0];}
+std::vector<std::string>* SqlData::end() {return &contents[contents.size()];}
 
 bool SqlQuery::insert()
 {//d should be 1 record
@@ -106,6 +108,6 @@ bool SqlQuery::order_lambda(const std::vector<std::string>& a,
 {
 	int i=0;
 	while(a[cols[i]] == b[cols[i]] && i < cols.size()-1) i++; 
-	return a[cols[i]] < b[cols[i]];
+	return is_int(i) ? stoi(a[cols[i]]) < stoi(b[cols[i]]) : a[cols[i]] < b[cols[i]];
 }
 

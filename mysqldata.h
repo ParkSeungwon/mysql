@@ -6,8 +6,8 @@
 class SqlData
 {
 public:
-	std::vector<std::string>* begin() {return &contents[0];}
-	std::vector<std::string>* end() {return &contents[contents.size()];}
+	std::vector<std::string>* begin();
+	std::vector<std::string>* end(); 
 	bool is_int(int nth_column);
 
 protected:
@@ -21,8 +21,8 @@ class SqlQuery : public Mysqlquery, public SqlData
 public:
 	int select(std::string table, std::string where = "");
 	int group_by(std::string col);
-
 	bool insert();
+	
 	std::string password(std::string pass);
 	std::vector<std::string> show_tables();
 	std::string now();//system clock->mysql datetime string
@@ -40,6 +40,11 @@ private:
 	template<typename... Args> void get_args(int col, Args... args) {
 		arguments.push_back(col);
 		get_args(args...);
+	}
+	template<typename... Args> void get_args(std::string col, Args... args) {
+		int i = 0;
+		while(structure[i].first != col) i++;
+		get_args(i, args...);
 	}
 	void get_args() {}
 

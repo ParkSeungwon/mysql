@@ -33,15 +33,19 @@ int main()
 			for(auto& b : a) cout << b << ' ';
 			cout << endl;
 		}
-		d.select("수능", "where page = 0 order by num, date");
+		d.select("수능"); 
+		d.order_by("num","date");
 		//d.group_by("num");
-		d.order_by(3, 5);
 		data = move(d);
 		for(auto& a : data) {
-			for(auto& b : a) cout << b << ' ';
+			cout << a[0] << ' ' << a[1] << ' ' << a[3] << a[5];
 			cout << endl;
 		}
+		d.select("Users", "where email = 'zezeon@msn.com' order by date desc limit 1");
+		
 
 	}
+
+
 
 }

@@ -9,6 +9,7 @@ public:
 	std::vector<std::string>* begin();
 	std::vector<std::string>* end(); 
 	bool is_int(int nth_column);
+	bool empty() {return contents.empty();}
 
 protected:
 	std::string table_name;
@@ -26,7 +27,7 @@ public:
 	std::vector<std::string> show_tables();
 	std::string now();//system clock->mysql datetime string
 	template <typename... Args> int group_by(Args... args)
-	{//first order_by -> group_by
+	{//first order_by -> group_by(col = 1,2,3,...)
 		arguments.clear();
 		get_args(args...);
 		std::vector<std::string> before;
@@ -34,7 +35,7 @@ public:
 		bool del;
 		for(auto& c : contents) {
 			del = true;
-			for(auto& a : arguments) if(c[a] != before[a]) del = false;
+			for(auto& a : arguments) if(c[a-1] != before[a-1]) del = false;
 			if(del) c[0] = "this_will@be&deleted";
 			else before = c;
 		}
@@ -63,7 +64,7 @@ private:
 	template<typename... Args> void get_args(std::string col, Args... args) {
 		int i = 0;
 		while(structure[i].first != col) i++;
-		get_args(i, args...);
+		get_args(i+1, args...);
 	}
 	void get_args() {}
 

@@ -34,7 +34,7 @@ int main()
 			cout << endl;
 		}
 		d.select("수능"); 
-		d.order_by("email", "date", -6);
+		d.order_by("email", "date", -7);
 		d.group_by("num", "page");
 		//d.group_by("num");
 		for(auto& a : d) {

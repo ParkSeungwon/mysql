@@ -91,14 +91,14 @@ bool SqlQuery::order_lambda(const std::vector<std::string>& a,
 		const std::vector<std::string>& b, std::vector<int> cols)
 {
 	int i=0;
-	while(a[abs(cols[i])] == b[abs(cols[i])] && i < cols.size()-1) i++; 
+	while(a[abs(cols[i])-1] == b[abs(cols[i])-1] && i < cols.size()-1) i++; 
 	bool desc = false;
 	if(cols[i] < 0) {
 		cols[i] = -cols[i];
 		desc = true;
 	}
-	bool asc = is_int(i) ? stoi(a[cols[i]]) < stoi(b[cols[i]]) : 
-						   		 a[cols[i]] < b[cols[i]];
+	bool asc = is_int(i) ? stoi(a[cols[i]-1]) < stoi(b[cols[i]-1]) : 
+						   		 a[cols[i]-1] < b[cols[i]-1];
 	return desc ? !asc : asc;
 }
 

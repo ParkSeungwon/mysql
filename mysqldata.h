@@ -36,12 +36,17 @@ public:
 		bool del;
 		for(auto& c : contents) {
 			del = true;
-			for(auto& a : arguments) if(c[a-1] != before[a-1]) del = false;
+			for(auto& a : arguments) {
+				if(c[a-1] != before[a-1]) {
+					del = false;
+					break;
+				}
+			}
 			if(del) c[0] = "this_will@be&deleted";
 			else before = c;
 		}
 		auto it = remove_if(contents.begin(), contents.end(), 
-				[](const std::vector<std::string>& a) {
+				[](const std::vector<Any>& a) {
 				return a[0] == "this_will@be&deleted";});
 		contents.erase(it, contents.end());
 		return contents.size();
@@ -69,7 +74,7 @@ private:
 	}
 	void get_args() {}
 
-	bool order_lambda(const std::vector<std::string>& a, 
-			const std::vector<std::string>& b, std::vector<int> cols);
+	bool order_lambda(const std::vector<Any>& a, 
+			const std::vector<Any>& b, std::vector<int> cols);
 };
 

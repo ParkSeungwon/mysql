@@ -8,12 +8,14 @@ public:
 	Any(int n);
 	Any(float f);
 	Any(std::string s);
+	Any() {Any("");}
 	Any& operator=(int n);
 	Any& operator=(float f);
 	Any& operator=(std::string str);
-	bool operator==(const Any& rhs);
-	bool operator!=(const Any& rhs);
-	bool operator<(const Any& rhs);
+	bool operator==(const Any& rhs) const;
+	bool operator==(const std::string& rhs) const {return rhs == str;}
+	bool operator!=(const Any& rhs) const;
+	bool operator<(const Any& rhs) const;
 	operator int();
 	operator float();
 	operator std::string();
@@ -37,4 +39,4 @@ private:
 	};
 };
 
-std::ostream& operator<<(std::ostream& o, Any& rhs);
+std::ostream& operator<<(std::ostream& o, Any rhs);

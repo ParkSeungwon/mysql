@@ -3,7 +3,7 @@ using namespace std;
 
 Any::operator std::string() 
 {
-	//if(is_int == true) throw AnyException();
+	//if(t == INT) return u.n;//throw AnyException();
 	return str;
 }
 
@@ -19,33 +19,33 @@ Any::operator float()
 	else return u.f;
 }
 
-ostream& operator<<(ostream& o, Any& rhs)//const ....?
+ostream& operator<<(ostream& o, Any rhs)//const ....?
 {
-	string s = rhs;
-	o << s;
+	o << (string)rhs;
 	return o;
 }
 
-bool Any::operator==(const Any& r)
+
+bool Any::operator==(const Any& r) const
 {
 	switch(t) {
-	case STRING: return str == r.str;
-	case INT: return u.n == r.u.n;
-	case FLOAT: return u.f == r.u.f;
+		case STRING: return str == r.str;
+		case INT: return u.n == r.u.n;
+		case FLOAT: return u.f == r.u.f;
 	}
 }
 
-bool Any::operator!=(const Any& r)
+bool Any::operator!=(const Any& r) const
 {
 	return !(*this == r);
 }
 
-bool Any::operator<(const Any& r)
+bool Any::operator<(const Any& r) const
 {
 	switch(t) {
-	case STRING: return str < r.str;
-	case INT: return u.n < r.u.n;
-	case FLOAT: return u.f < r.u.f;
+		case STRING: return str < r.str;
+		case INT: return u.n < r.u.n;
+		case FLOAT: return u.f < r.u.f;
 	}
 }
 		

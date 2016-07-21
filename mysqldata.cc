@@ -4,6 +4,7 @@
 #include <ctime>
 #include "mysqldata.h"
 using namespace std;
+
 bool SqlData::is_int(int n)
 {
 	return structure[n].second.find("INT") != string::npos;
@@ -55,8 +56,8 @@ int SqlQuery::select(string table, string where)
 	while(res->next()) { //populate contents
 		record.clear();
 		for(int i = 0; i < c; i++) {
-			if(structure[i].second.find("INT") == string::npos) record.push_back(Any(res->getString(i+1)));
-			else record.push_back(res->getInt(i+1));
+			if(is_int(i)) record.push_back(res->getInt(i+1));
+			else record.push_back(Any(res->getString(i+1)));
 		}
 		contents.push_back(record);
 	}
@@ -90,8 +91,8 @@ vector<string> SqlQuery::show_tables()
 	return record;
 }
 
-bool SqlQuery::order_lambda(const std::vector<std::string>& a, 
-		const std::vector<std::string>& b, std::vector<int> cols)
+bool SqlQuery::order_lambda(const std::vector<Any>& a, 
+		const std::vector<Any>& b, std::vector<int> cols)
 {
 	int i=0;
 	while(a[abs(cols[i])-1] == b[abs(cols[i])-1] && i < cols.size()-1) i++; 
@@ -100,8 +101,7 @@ bool SqlQuery::order_lambda(const std::vector<std::string>& a,
 		cols[i] = -cols[i];
 		desc = true;
 	}
-	bool asc = is_int(i) ? stoi(a[cols[i]-1]) < stoi(b[cols[i]-1]) : 
-						   		 a[cols[i]-1] < b[cols[i]-1];
+	bool asc = a[cols[i]-1] < b[cols[i]-1];
 	return desc ? !asc : asc;
 }
 

@@ -4,21 +4,21 @@
 #include <ctime>
 #include "mysqldata.h"
 using namespace std;
-
 bool SqlData::is_int(int n)
 {
 	return structure[n].second.find("INT") != string::npos;
 }
-std::vector<std::string>* SqlData::begin() {return &contents[0];}
-std::vector<std::string>* SqlData::end() {return &contents[contents.size()];}
+std::vector<Any>* SqlData::begin() {return &contents[0];}
+std::vector<Any>* SqlData::end() {return &contents[contents.size()];}
 
 bool SqlQuery::insert()
 {//d should be 1 record
 	auto& record = contents[0];
 	string q = "insert into " + table_name + " values (";
 	for(int i=0; i<structure.size(); i++) {
-		if(structure[i].second.find("INT") != string::npos) q += record[i] + ",";
-		else q += "'" + record[i] + "',";
+		string s = record[i];
+		if(structure[i].second.find("INT") != string::npos) q += s + ",";
+		else q += "'" + s + "',";
 	}
 	q.back() = ')';
 	q += ";";
@@ -51,10 +51,13 @@ int SqlQuery::select(string table, string where)
 	contents.clear();
 	for(int i = 0; i < c; i++) //populate structure
 		structure.push_back({mt->getColumnName(i+1), mt->getColumnTypeName(i+1)});
-	vector<string> record;
+	vector<Any> record;
 	while(res->next()) { //populate contents
 		record.clear();
-		for(int i = 0; i < c; i++) record.push_back(res->getString(i+1));
+		for(int i = 0; i < c; i++) {
+			if(structure[i].second.find("INT") == string::npos) record.push_back(Any(res->getString(i+1)));
+			else record.push_back(res->getInt(i+1));
+		}
 		contents.push_back(record);
 	}
 	return contents.size();

@@ -1,5 +1,4 @@
-#include <iostream>
-#include "mysqldata.h"
+#include"mysqldata.h"
 using namespace std;
 
 int main()
@@ -23,6 +22,7 @@ int main()
 //		"031-255-6698", member.now()};
 //	member.insert(member);
 	member.select("수능", "where num=1 order by date, edit desc");
+	member.order_by("email");
 	int n = 0;
 	int k;
 //	cout << "structure size = " << member.structure.size() << endl;
@@ -32,7 +32,7 @@ int main()
 	for(auto& b : member) for(auto& a : b) {
 		n++;
 		k = n % 7;
-		if(k == 4 || k == 6 || k == 0)  cout << a << ' ';
+//		if(k == 4 || k == 6 || k == 0)  cout << a << ' ';
 	}
 }
 

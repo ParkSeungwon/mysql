@@ -2,19 +2,20 @@
 #include <vector>
 #include<functional>
 #include "mysqlquery.h"
+#include"any.h"
 
 class SqlData
 {
 public:
-	std::vector<std::string>* begin();
-	std::vector<std::string>* end(); 
+	std::vector<Any>* begin();
+	std::vector<Any>* end(); 
 	bool is_int(int nth_column);
 	bool empty() {return contents.empty();}
 
 protected:
 	std::string table_name;
 	std::vector<std::pair<std::string, std::string>> structure;
-	std::vector<std::vector<std::string>> contents;
+	std::vector<std::vector<Any>> contents;
 };
 
 class SqlQuery : public Mysqlquery, public SqlData
@@ -30,7 +31,7 @@ public:
 	{//first order_by -> group_by(col = 1,2,3,...)
 		arguments.clear();
 		get_args(args...);
-		std::vector<std::string> before;
+		std::vector<Any> before;
 		before.resize(arguments.size());
 		bool del;
 		for(auto& c : contents) {

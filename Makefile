@@ -1,5 +1,5 @@
 CC = g++
-C_OPTION = -g -std=c++11 -fmax-errors=3
+C_OPTION = -g -std=c++11 -fmax-errors=1
 SRC = $(wildcard *.cc)
 SRCX = $(wildcard *.cpp)
 OBJ = $(patsubst %.cc, %.o, $(SRC))

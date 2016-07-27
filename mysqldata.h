@@ -61,6 +61,24 @@ public:
 					std::placeholders::_2, arguments));
 	}
 
+	template <typename... Args> std::string to_html_table(Args... args)
+	{
+		arguments.clear();
+		get_args(args...);
+		if(arguments.empty()) 
+			for(int i=1; i<=structure.size(); i++) arguments.push_back(i);
+		std::string tb = "<table>";
+		tb += "<tr>";
+		for(int& a : arguments) tb += "<th>" + structure[abs(a)-1].first + "</th>";
+		tb += "</tr>\n";
+		for(auto& a : contents) {
+			tb += "<tr>";
+			for(int& b : arguments) tb += "<td>" + (std::string)a[abs(b)-1] + "</td>";
+			tb += "</tr>\n";
+		}
+		return tb + "</table>";
+	}
+
 private:
 	std::vector<int> arguments;
 	template<typename... Args> void get_args(int col, Args... args) {

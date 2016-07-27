@@ -104,4 +104,3 @@ bool SqlQuery::order_lambda(const std::vector<Any>& a,
 	bool asc = a[cols[i]-1] < b[cols[i]-1];
 	return desc ? !asc : asc;
 }
-

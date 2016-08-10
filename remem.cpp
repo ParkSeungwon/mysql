@@ -9,11 +9,19 @@ Remember::Remember(string pass) : di(97, 122) {
 	user = getenv("USER");
 	home = getenv("HOME");
 	ifstream f(home + "/.pass");
-	string s[3];
-	f >> s[0];
-	if(s == decode(pass)) {
-		password = pass;
-		while(f >> s[0] >> s[1] >> s[2]) cout << decode(s[0]);
+	array<string, 3> s;
+	if(!f.is_open()) {
+		ofstream f(home + "/.pass");
+		f << encode(pass) << endl;
+	} else {
+		f >> s[0];
+		if(decode(s[0]) == pass) {
+			password = pass;
+			while(f >> s[0] >> s[1] >> s[2]) {
+				for(auto& a : s) a = decode(a);
+				sq.push_back(s);
+			}
+		}
 	}
 }
 
@@ -28,11 +36,8 @@ void Remember::show() {
 
 
 void Remember::add(string site, string id, string pass) {
-	auto it = sq.begin();//should have at least 1 result..
-	(*it)[0] = encode(site);
-	(*it)[1] = encode(id);
-	(*it)[2] = encode(pass);
-	sq.insert();
+	ofstream f(home + "/.pass", ofstream::app);
+	f << encode(site) << ' ' << encode(id) << ' ' << encode(pass) << endl;
 }
 
 string Remember::encode(string s) {

@@ -1,6 +1,8 @@
 #include<random>
 #include<string>
 #include<unordered_map>
+#include<vector>
+#include<array>
 #include"mysqldata.h"
 using std::string;
 
@@ -15,7 +17,7 @@ protected:
 	string user;
 	string home;
 	string password;
-	SqlQuery sq;
+	std::vector<std::array<string, 3>> sq;
 
 private:
 	std::random_device rd;

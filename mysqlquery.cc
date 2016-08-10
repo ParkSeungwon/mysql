@@ -10,20 +10,19 @@ bool Mysqlquery::myQuery(std::string str)
 {
 	//cout << str << endl;
     bool ok = false;
-	try
-	{
+	try {
         //cout << "Executing query....." << endl << endl;
         res = stmt->executeQuery(str);
 		//cout << "Done." << endl;
         ok = true;
-	}
-	catch (sql::SQLException &e) 
-	{
-		cout << "# ERR: SQLException in " << __FILE__ ;
-		cout << "(" << __FUNCTION__<< ") on line " << __LINE__  << endl;
-		cout << "# ERR: " << e.what();
-		cout << "  (MySQL error code: " << e.getErrorCode();
-		cout << ", SQLState: " << e.getSQLState() << " )"  << endl << endl;
+	} catch (sql::SQLException &e) {
+		if(e.getErrorCode() != 0) {
+			cout << "# ERR: SQLException in " << __FILE__ ;
+			cout << "(" << __FUNCTION__<< ") on line " << __LINE__  << endl;
+			cout << "# ERR: " << e.what();
+			cout << "  (MySQL error code: " << e.getErrorCode();
+			cout << ", SQLState: " << e.getSQLState() << " )"  << endl << endl;
+		}
 	}
     return ok;
 }
@@ -39,8 +38,7 @@ bool Mysqlquery::connect(string host, string user, string pass, string db)
         stmt = con->createStatement();
         //std::cout << "done.." << std::endl;
         ok = true;
-    }
-    catch (sql::SQLException &e) {
+    } catch (sql::SQLException &e) {
 		cout << "# ERR: SQLException in " << __FILE__ ;
 		cout << "(" << __FUNCTION__<< ") on line " << __LINE__  << endl;
 		cout << "# ERR: " << e.what();

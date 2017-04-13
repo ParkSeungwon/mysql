@@ -1,11 +1,13 @@
 #include"cgi.h"
 using namespace std;
 
-string CGI::header_ = "Content-type:text/html\r\n\r\n"
-	"<html>\n<head>\n"
-	"<meta charset='utf-8' />\n"
-	"<title>Discussion & Democratic Decision making</title>"
-	"</head>\n<body>";
+string CGI::header_ = R"literal(
+Content-type:text/html
+<html><head>
+<meta charset='utf-8' />
+<title>Discussion & Democratic Decision making</title>
+</head><body>
+)literal";
 
 string CGI::param(const string& post, const string& par) 
 {

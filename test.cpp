@@ -1,5 +1,6 @@
 #include"mysqldata.h"
 #include<iostream>
+#include"cgi.h"
 using namespace std;
 
 
@@ -45,7 +46,10 @@ int main()
 		
 
 	}
-
+	{
+		auto m = CGI::parse_post("id=zezeon%40msn.com&password=cockcodk0");
+		for(auto& a : m) cout << a.first << ' ' << a.second << endl;
+	}
 
 
 }

@@ -1,18 +1,16 @@
 #include<iostream>
 #include<string>
 #include"mysqldata.h"
+#include"cgi.h"
 using namespace std;
 
 int main()
 {
 	string s;
 	cin >> s;
-	int sp = s.find('&');
-	cout << s;
-	string id = s.substr(3, sp - 3);
-	int per = id.find('%');
-	id.replace(per, 3, "@");
-	string pass = s.substr(sp+10);
+	auto param = CGI::parse_post(s);
+	string id = param["id"];
+	string pass = param["password"];
 	SqlQuery sq;
 	sq.connect("localhost", "dndd", "dndddndd", "dndd");
 	sq.select("Users", "where email='" + id + "' order by date desc limit 1");

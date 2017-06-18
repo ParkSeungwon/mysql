@@ -1,3 +1,4 @@
+#include<sstream>
 #include"cgi.h"
 using namespace std;
 
@@ -21,4 +22,21 @@ string CGI::param(const string& post, const string& par)
 	for(pos = s.find('%', 0); pos != string::npos; pos = s.find('%', pos))
 		s.replace(pos, 3, 1, (char)stoi(s.substr(pos + 1, 2), nullptr, 16));
 	return s;
+}
+
+map<string, string> CGI::parse_post(const string& post_string)
+{
+	map<string, string> m;
+	stringstream ss;
+	ss << post_string;
+	string s, value;
+	while(getline(ss, s, '&')) {
+		int pos = s.find('=');
+		value = s.substr(pos+1);
+		for(auto& a : value) if(a == '+') a = ' ';
+		for(int i = value.find('%'); i != string::npos; i = value.find('%', i))
+			value.replace(i, 3, 1, (char)stoi(value.substr(i + 1, 2), nullptr,16));
+		m[s.substr(0, pos)] = value;
+	}
+	return m;
 }

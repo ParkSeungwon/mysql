@@ -1,4 +1,3 @@
-#include<sstream>
 #include"cgi.h"
 using namespace std;
 
@@ -24,13 +23,11 @@ string CGI::param(const string& post, const string& par)
 	return s;
 }
 
-map<string, string> CGI::parse_post(const string& post_string)
+map<string, string> CGI::parse_post(istream& post)
 {
 	map<string, string> m;
-	stringstream ss;
-	ss << post_string;
 	string s, value;
-	while(getline(ss, s, '&')) {
+	while(getline(post, s, '&')) {
 		int pos = s.find('=');
 		value = s.substr(pos+1);
 		for(auto& a : value) if(a == '+') a = ' ';

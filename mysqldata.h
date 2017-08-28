@@ -14,8 +14,8 @@ public:
 
 protected:
 	std::string table_name;
-	std::vector<std::pair<std::string, std::string>> structure;
-	std::vector<std::vector<Any>> contents;
+	std::vector<std::pair<std::string, std::string>> structure;//col_name, type
+	std::vector<std::vector<Any>> contents;//vector of (row = vector of any) 
 };
 
 class SqlQuery : public Mysqlquery, public SqlData

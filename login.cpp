@@ -7,8 +7,7 @@ using namespace std;
 int main()
 {
 	string s;
-	cin >> s;
-	auto param = CGI::parse_post(s);
+	auto param = CGI::parse_post(cin);
 	string id = param["id"];
 	string pass = param["password"];
 	SqlQuery sq;
@@ -41,10 +40,9 @@ int main()
 	cout << "</head>\n";                                                          
 	cout << "<body>\n";                 	
 	if(login) {
-		for(auto& a : sq.show_tables()) {
-			if(a != "Users" && a != "Vote" && a != "Follow") 
-				cout << "<a href='/cgi-bin/table.cgi?table=" + a +"'>" + a + "</a><br>\n";
-		} 
+		for(auto& a : sq.show_tables()) if(a!="Users" && a!="Vote" && a!="Follow") 
+			cout << "<a href='/cgi-bin/table.cgi?table=" + a +"'>" + a + "</a><br>\n";
+		
 	} else cout << "Login failed";
 	cout << "</body></html>";
 }

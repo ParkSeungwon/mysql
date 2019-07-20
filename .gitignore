@@ -2,3 +2,7 @@
 sql
 *.vim
 *.swp
+find
+.
+-size
++3M
